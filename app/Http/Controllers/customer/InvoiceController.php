@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\customer;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class PaymentController extends Controller
+class InvoiceController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -13,11 +14,13 @@ class PaymentController extends Controller
      */
     public function index()
     {
-        //
+        return view('customers.invoice.index');
     }
-    public function customerPayment($customerId){
-        return view('customers.payment.index');
+
+    public function customerInvoice($userId){
+        return view('customers.invoice.index');
     }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -34,9 +37,9 @@ class PaymentController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request,$customerId)
     {
-        //
+        return redirect('customer/invoice/3/4');
     }
 
     /**
@@ -45,9 +48,13 @@ class PaymentController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($invoiceId,$customerId)
     {
-        //
+        // echo 'invoice details';
+        // echo 'invoice id'.$invoiceId;
+        // echo 'customer id'.$customerId;
+
+        return view('customers.invoice.details');
     }
 
     /**

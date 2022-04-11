@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\customer;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class RefundController extends Controller
+class CustomerController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -13,12 +14,8 @@ class RefundController extends Controller
      */
     public function index()
     {
-        //
-    }
 
-    public function customerRefund($customerId)
-    {
-        return view('customers.refund.index');
+        return view('customers.customers');
     }
 
     /**
@@ -28,7 +25,7 @@ class RefundController extends Controller
      */
     public function create()
     {
-        //
+        return view('customers.createCustomer');
     }
 
     /**
@@ -50,9 +47,8 @@ class RefundController extends Controller
      */
     public function show($id)
     {
-        //
+        return view ('customers.detailsCustomer');
     }
-
     /**
      * Show the form for editing the specified resource.
      *
@@ -61,7 +57,8 @@ class RefundController extends Controller
      */
     public function edit($id)
     {
-        //
+        
+        return view('customers.editCustomer');
     }
 
     /**

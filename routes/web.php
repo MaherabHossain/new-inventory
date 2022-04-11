@@ -1,14 +1,17 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\CustomersController;
-use App\Http\Controllers\InvoiceController;
-use App\Http\Controllers\PaymentController;
-use App\Http\Controllers\RefundController;
+use App\Http\Controllers\customer\CustomerController;
+use App\Http\Controllers\customer\PaymentController;
+use App\Http\Controllers\customer\InvoiceController;
+use App\Http\Controllers\customer\RefundController;
+
 use App\Http\Controllers\supplier\SupplierController;
 use App\Http\Controllers\supplier\SupplierInvoiceController;
 use App\Http\Controllers\supplier\SupplierPaymentController;
 use App\Http\Controllers\supplier\SupplierRefundController;
+use App\Http\Controllers\product\BrandController;
+use App\Http\Controllers\product\ProductController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -26,7 +29,7 @@ Route::get('/', function () {
 
 // customers route
 
-Route::resource('customers', CustomersController::class);
+Route::resource('customers', CustomerController::class);
 // invoices route
 Route::get('customer/invoices/{customer_id}/show',[InvoiceController::class, 'customerInvoice'])->name('customerInvoice.show');
 Route::post('customer/invoice/{customer_id}', [InvoiceController::class, 'store'])->name('invoice.store');
@@ -47,7 +50,6 @@ Route::post('customer/payment/{customer_id}/{invoice_id}', function ($customer_i
 // suppliers routes
 Route::resource('supplier', SupplierController::class);
 Route::prefix('supplier/')->group(function () {
-   
     Route::get('invoice/{supplier_id}/show',[SupplierInvoiceController::class, 'supplierInvoice'])->name('supplierInvoice.show');
     // supplier invoice
     Route::get('invoice/{invoice_id}/{supplier_id}', [SupplierInvoiceController::class, 'show'])->name('supplier.invoice.details');
@@ -60,14 +62,17 @@ Route::prefix('supplier/')->group(function () {
     Route::get('supplier/refund/{supplier_id}/show',[SupplierRefundController::class, 'supplierRefund'])->name('supplierRefund.show');
 });
 
-// Route::resource('supplier', SupplierController::class);
-// Route::get('supplier/invoice/{supplier_id}/show',[SupplierInvoiceController::class, 'supplierInvoice'])->name('supplierInvoice.show');
-// // supplier invoice
-// Route::get('supplier/invoice/{invoice_id}/{supplier_id}', [SupplierInvoiceController::class, 'show'])->name('supplier.invoice.details');
-// Route::post('supplier/invoice/{supplier_id}', [SupplierInvoiceController::class, 'store'])->name('supplier.invoice.store');
-// // supplier payment
-// Route::get('supplier/payment/{supplier_id}/show',[SupplierPaymentController::class, 'supplierPayment'])->name('customerPayment.show');
-// Route::post('supplier/payment/{supplier_id}/{invoice_id}', function ($supplier_id,$receipt_id) {
-//     return 'store payment';
-// })->name('supplier.invoice.payment.store');
+// product and brand
+// brand 
+// resourse route not working :(
+Route::prefix('brand')->group(function () {
+    Route::get('',[BrandController::class, 'index']);
+    Route::post('',[BrandController::class, 'store']);
+    Route::get('/{id}/edit',[BrandController::class, 'edit']);
+    Route::put('/{id}/update',[BrandController::class, 'update']);
+    Route::post('/{id}/delete', [BrandController::class, 'destroy']);
+});
+// product
+// resourse route not working :(
 
+Route::resource('product', ProductController::class);
