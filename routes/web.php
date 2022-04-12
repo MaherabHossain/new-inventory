@@ -12,16 +12,7 @@ use App\Http\Controllers\supplier\SupplierPaymentController;
 use App\Http\Controllers\supplier\SupplierRefundController;
 use App\Http\Controllers\product\BrandController;
 use App\Http\Controllers\product\ProductController;
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
+
 
 Route::get('/', function () {
     return view('welcome');
@@ -30,6 +21,7 @@ Route::get('/', function () {
 // customers route
 
 Route::resource('customers', CustomerController::class);
+
 // invoices route
 Route::get('customer/invoices/{customer_id}/show',[InvoiceController::class, 'customerInvoice'])->name('customerInvoice.show');
 Route::post('customer/invoice/{customer_id}', [InvoiceController::class, 'store'])->name('invoice.store');
@@ -49,6 +41,7 @@ Route::post('customer/payment/{customer_id}/{invoice_id}', function ($customer_i
 
 // suppliers routes
 Route::resource('supplier', SupplierController::class);
+
 Route::prefix('supplier/')->group(function () {
     Route::get('invoice/{supplier_id}/show',[SupplierInvoiceController::class, 'supplierInvoice'])->name('supplierInvoice.show');
     // supplier invoice

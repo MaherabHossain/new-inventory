@@ -16,10 +16,10 @@
 <div class="row clearfix">
 	<div class="col-md-2">
     <div class="nav flex-column nav-pills" >
-	<a href="{{url('suppliers/3')}}" class="btn btn-secondary text-left">Supplier Information</a>
-	<a href="{{ route('supplierInvoice.show',3) }}" class="btn btn-primary mt-1 text-left">Invoice</a>
-	<a href="{{ route('supplierPayment.show',3) }}" class="btn btn-primary mt-1 text-left">Payment</a>
-	<a href="{{ route('supplierRefund.show',3) }}" class="btn btn-primary mt-1 text-left">Refund</a>
+	<a href="{{url('suppliers/'.$supplier->id)}}" class="btn btn-secondary text-left">Supplier Information</a>
+	<a href="{{ route('supplierInvoice.show',$supplier->id) }}" class="btn btn-primary mt-1 text-left">Invoice</a>
+	<a href="{{ route('supplierPayment.show',$supplier->id) }}" class="btn btn-primary mt-1 text-left">Payment</a>
+	<a href="{{ route('supplierRefund.show',$supplier->id) }}" class="btn btn-primary mt-1 text-left">Refund</a>
 </div>
 
 
@@ -37,15 +37,15 @@
 					      
 					      	<tr>
 					      		<th class="text-right">Name : </th>
-					      		<td>Maherab </td>
+					      		<td>{{$supplier->name}} </td>
 					      	</tr>
 					      	<tr>
 					      		<th class="text-right">Eamil : </th>
-					      		<td> maherabzishan.cs@gmail.com </td>
+					      		<td> {{$supplier->email}} </td>
 					      	</tr>
 					      	<tr>
 					      		<th class="text-right">Phone : </th>
-					      		<td> 01793847289</td>
+					      		<td> {{$supplier->phone}}</td>
 					      	</tr>
 						     </table>
 			    		</div>

@@ -4,7 +4,8 @@ namespace App\Http\Controllers\supplier;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-
+use App\Models\Supplier;
+use Illuminate\Support\Facades\Session;
 class SupplierController extends Controller
 {
     /**
@@ -14,7 +15,8 @@ class SupplierController extends Controller
      */
     public function index()
     {
-        return view('suppliers.index');
+        $data['suppliers'] = Supplier::all();
+        return view('suppliers.index',$data);
     }
 
     /**
@@ -35,7 +37,16 @@ class SupplierController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'name' => 'required',
+            'phone' => 'required',
+        ]);
+        if(Supplier::create($request->all())){
+            Session::flash('message','Supplier Added Successfully!');
+        }else{
+            Session::flash('error','Something wrong!');
+        }    
+        return redirect()->to('supplier');
     }
     
     /**
@@ -46,7 +57,8 @@ class SupplierController extends Controller
      */
     public function show($id)
     {
-        return view('suppliers.detailsSupplier');
+        $data['supplier'] = Supplier::FindOrFail($id);
+        return view('suppliers.detailsSupplier',$data);
     }
 
     /**
@@ -57,7 +69,8 @@ class SupplierController extends Controller
      */
     public function edit($id)
     {
-        return view('suppliers.editSupplier');
+        $data['supplier'] = Supplier::FindOrFail($id);
+        return view('suppliers.editSupplier',$data);
     }
 
     /**
@@ -69,7 +82,22 @@ class SupplierController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $validated = $request->validate([
+            'name' => 'required',
+            'phone' => 'required',
+        ]);
+        $formData = $request->all();
+       $supplier = Supplier::FindOrFail($id);
+       $supplier->name = $formData['name'];
+       $supplier->email = $formData['email'];
+       $supplier->phone = $formData['phone'];
+
+       if($supplier->save()){
+        Session::flash('message','Supplier Info Updated Successfully!');
+    }else{
+        Session::flash('error','Something wrong!');
+    }    
+    return redirect()->to('supplier');
     }
 
     /**
@@ -80,6 +108,11 @@ class SupplierController extends Controller
      */
     public function destroy($id)
     {
-        //
+        if(Supplier::findOrFail($id)->delete()){
+            Session::flash('message','Supplier Deleted Successfully!');
+        }else{
+            Session::flash('error','Something wrong!');
+        }
+        return redirect()->to('supplier');
     }
 }

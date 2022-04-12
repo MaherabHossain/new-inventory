@@ -21,18 +21,20 @@
 		    			</ul>
 		    		</div>
 		    	@endif
-		   		<form action="">
+		   		<form action="{{ url('supplier',$supplier->id) }}" method="post" >
+					@csrf
+					@method('put')
 					  <div class="form-group">
 					    <label for="name">supplier name<i class="text-danger">*</i></label>
-					    <input type="text" class="form-control" placeholder="name">
+					    <input type="text" name="name" value="{{ $supplier->name }}" class="form-control" placeholder="name">
 					  </div>
 					  <div class="form-group">
 					    <label for="email">supplier email<i class="text-danger">*</i></label>
-					    <input type="email" class="form-control" placeholder="Email">
+					    <input type="email" name="email" value="{{ $supplier->email }}" class="form-control" placeholder="Email">
 					  </div>
 					  <div class="form-group">
 					    <label for="phone">supplier phone<i class="text-danger">*</i></label>
-                        <input type="email" class="form-control" placeholder="Phone">
+                        <input type="text" name="phone" value="{{ $supplier->phone }}" class="form-control" placeholder="Phone">
 					  </div>
 					  <div class="text-right">
 					  	<button type="submit" class="btn btn-primary">Update</button>

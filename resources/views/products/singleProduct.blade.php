@@ -36,7 +36,7 @@
 					      	</tr>
 					      	<tr>
 					      		<th class="text-right">Description : </th>
-					      		<td> {{$product->description}} </td>
+					      		<td> {{$product->Description }} </td>
 					      	</tr>
 						     </table>
 			    		</div>
