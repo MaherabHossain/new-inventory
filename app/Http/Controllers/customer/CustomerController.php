@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\customer;
 
 use App\Http\Controllers\Controller;
+use App\Models\Customer;
 use Illuminate\Http\Request;
+
 
 class CustomerController extends Controller
 {
@@ -14,8 +16,10 @@ class CustomerController extends Controller
      */
     public function index()
     {
-
-        return view('customers.customers');
+        $customers = Customer::latest()->paginate(5);
+    
+        return view('customers.index',compact('customers'))
+            ->with('i', (request()->input('page', 1) - 1) * 5);
     }
 
     /**
@@ -36,7 +40,16 @@ class CustomerController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required',
+            'email' => 'required',
+            'phone' => 'required',
+        ]);
+    
+        Customer::create($request->all());
+     
+        return redirect()->route('customers.index')
+                        ->with('success','Custommer created successfully.');
     }
 
     /**
@@ -45,9 +58,9 @@ class CustomerController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Customer $customer)
     {
-        return view ('customers.detailsCustomer');
+        return view('customers.detailsCustomer',compact('customer'));
     }
     /**
      * Show the form for editing the specified resource.
@@ -55,10 +68,9 @@ class CustomerController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Customer $customer)
     {
-        
-        return view('customers.editCustomer');
+        return view('customers.editCustomer',compact('customer'));
     }
 
     /**
@@ -68,9 +80,18 @@ class CustomerController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Customer $customer)
     {
-        //
+        $request->validate([
+            'name' => 'required',
+            'email' => 'required',
+            'phone' => 'required',
+        ]);
+    
+        $customer->update($request->all());
+    
+        return redirect()->route('customers.index')
+                        ->with('success','Customer Data updated successfully');
     }
 
     /**
@@ -79,8 +100,11 @@ class CustomerController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Customer $customer)
     {
-        //
+        $customer->delete();
+    
+        return redirect()->route('customers.index')
+                        ->with('success','Customer deleted successfully');
     }
 }

@@ -47,6 +47,7 @@ Route::prefix('supplier/')->group(function () {
     // supplier invoice
     Route::get('invoice/{invoice_id}/{supplier_id}', [SupplierInvoiceController::class, 'show'])->name('supplier.invoice.details');
     Route::post('invoice/{supplier_id}', [SupplierInvoiceController::class, 'store'])->name('supplier.invoice.store');
+    Route::delete('invoice/{invoice_id}/{supplier_id}', [SupplierInvoiceController::class, 'destroy']);
     // supplier payment
     Route::get('payment/{supplier_id}/show',[SupplierPaymentController::class, 'supplierPayment'])->name('supplierPayment.show');
     Route::post('payment/{supplier_id}/{invoice_id}', function ($supplier_id,$receipt_id) {

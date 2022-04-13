@@ -120,7 +120,7 @@
     	<div class="card shadow mb-4">
             <div class="card shadow mb-4">
 			    <div class="card-header py-3">
-			      <h6 class="m-0 font-weight-bold text-primary"> Maherab </h6>
+			      <h6 class="m-0 font-weight-bold text-primary"> {{ $customer->name }} </h6>
 			    </div>
 			    <div class="card-body">
 			    	<div class="row clearfix justify-content-md-center">
@@ -129,15 +129,15 @@
 					      
 					      	<tr>
 					      		<th class="text-right">Name : </th>
-					      		<td>Maherab </td>
+					      		<td>{{ $customer->name }} </td>
 					      	</tr>
 					      	<tr>
 					      		<th class="text-right">Eamil : </th>
-					      		<td> maherabzishan.cs@gmail.com </td>
+					      		<td> {{ $customer->email }} </td>
 					      	</tr>
 					      	<tr>
 					      		<th class="text-right">Phone : </th>
-					      		<td> 01793847289</td>
+					      		<td>{{ $customer->phone }}</td>
 					      	</tr>
 						     </table>
 			    		</div>

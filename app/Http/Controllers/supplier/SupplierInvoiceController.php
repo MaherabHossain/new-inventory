@@ -4,7 +4,9 @@ namespace App\Http\Controllers\supplier;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-
+use App\Models\Supplier;
+use Illuminate\Support\Facades\Session;
+use App\Models\SupplierInvoice;
 class SupplierInvoiceController extends Controller
 {
     /**
@@ -18,7 +20,9 @@ class SupplierInvoiceController extends Controller
     }
     public function supplierInvoice($supplierId)
     {
-        return view('suppliers.invoice.index');
+        $data['supplier'] = Supplier::FindOrFail($supplierId);
+
+        return view('suppliers.invoice.index',$data);
     }
     /**
      * Show the form for creating a new resource.
@@ -36,9 +40,19 @@ class SupplierInvoiceController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request,$supplierId)
     {
-        return redirect('supplier/invoice/3/4');
+        $validated = $request->validate([
+            'date' => 'required',
+        ]);
+        $formData = $request->all();
+        $formData['supplier_id'] = $supplierId;
+        if(SupplierInvoice::create($formData)){
+            Session::flash('message','Supplier Invoice Created Successfully!');
+        }else{
+            Session::flash('error','Something wrong!');
+        } 
+        return redirect()->to('supplier/invoice/'.$supplierId.'/show');
     }
 
     /**
@@ -81,8 +95,13 @@ class SupplierInvoiceController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($invoiceId,$supplierId)
     {
-        //
+        if(supplierInvoice::findOrFail($invoiceId)->delete()){
+            Session::flash('message','Invoice Deleted Successfully!');
+        }else{
+            Session::flash('error','Something wrong!');
+        }
+        return redirect()->to('supplier/invoice/'.$supplierId .'/show');
     }
 }

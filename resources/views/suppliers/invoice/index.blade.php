@@ -20,15 +20,25 @@
 	<div class="col-md-2">
     <div class="nav flex-column nav-pills" >
     <a href="{{url('supplier/3')}}" class="btn btn-primary text-left">Supplier Information</a>
-	<a href="{{ route('supplierInvoice.show',3) }}" class="btn btn-secondary mt-1 text-left">Invoice</a>
-	<a href="{{ route('supplierInvoice.show',3) }}" class="btn btn-primary mt-1 text-left">Payment</a>
-	<a href="{{ route('supplierRefund.show',3) }}" class="btn btn-primary mt-1 text-left">Refund</a>
+	<a href="{{ route('supplierInvoice.show',$supplier->id) }}" class="btn btn-secondary mt-1 text-left">Invoice</a>
+	<a href="{{ route('supplierInvoice.show',$supplier->id) }}" class="btn btn-primary mt-1 text-left">Payment</a>
+	<a href="{{ route('supplierRefund.show',$supplier->id) }}" class="btn btn-primary mt-1 text-left">Refund</a>
 </div>
 
 
     </div>
     
     <div class="col-md-9">
+      @if(Session::has('message'))
+      <div class="alert alert-success">
+          <p>{{ Session::get('message') }}</p>
+      <div>
+  @endif
+  @if(Session::has('error'))
+      <div class="alert alert-success">
+          <p>{{ Session::get('error') }}</p>
+      <div>
+  @endif
     	<!-- DataTales Example -->
         <div class="card shadow mb-4">
 
@@ -39,6 +49,7 @@
                 <tr>
                     <th>Id</th>
                     <th>Date</th>
+                    <th>Note</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -46,31 +57,32 @@
                 <tr>
                     <th>Id</th>
                     <th>Date</th>
+                    <th>Note</th>
                     <th>Actions</th>
 
 
                 </tr>
             </tfoot>
             <tbody>
-                <tr>
-                    <td>1</td>
+              @foreach ($supplier->supplier_invoice as $invoice)
+                  
              
-                    <td>23-4-2022</td>
+                <tr>
+                    <td>{{$invoice->id}}</td>
+             
+                    <td>{{$invoice->date}}</td>
+                    <td>{{$invoice->description}}</td>
                     <td class="text-center">
-                        <a href="{{ url('supplier/invoice/3/4') }}" class="btn btn-success btn-sm"> <i class="fa fa-eye" ></i></a>
+                      <form action="{{url('supplier/invoice/'.$invoice->id.'/'.$supplier->id)}}" method="post">
+                        @csrf
+                        @method('delete')
+                        <a href="{{ url('supplier/invoice/'.$invoice->id.'/'.$supplier->id) }}" class="btn btn-success btn-sm"> <i class="fa fa-eye" ></i></a>
                         
                         <button onclick="return confirm('Are you sure')" class="btn btn-danger mb-1 btn-sm"> <i class="fa fa-trash"></i> </button>
+                      </form>
                       </td>
                 </tr>
-                   <tr>
-                    <td>1</td>
-                    <td>23-4-2022</td>
-                    <td class="text-center">
-                        <a href="{{ url('supplier/invoice/3/4') }}" class="btn btn-success btn-sm"> <i class="fa fa-eye" ></i></a>
-                        
-                        <button onclick="return confirm('Are you sure')" class="btn btn-danger mb-1 btn-sm"> <i class="fa fa-trash"></i> </button>
-                      </td>
-                </tr>
+                @endforeach  
             </tbody>
         </table>
     </div>
@@ -83,11 +95,11 @@
 
 <div class="modal fade" id="add_sale" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
-    <form action="{{ route('supplier.invoice.store',4) }}" method="post">
+    <form action="{{ route('supplier.invoice.store',$supplier->id) }}" method="post">
         @csrf
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="newPaymentModalLabel"> New Sale </h5>
+          <h5 class="modal-title" id="newPaymentModalLabel"> New Invoice </h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -97,21 +109,14 @@
           <div class="form-group row">
             <label for="date" class="col-sm-3 col-form-label"> Date <span class="text-danger">*</span> </label>
             <div class="col-sm-9">
-            <input type="date" class="form-control" placeholder='date'>
+            <input type="date" name="date" class="form-control" placeholder='date'>
             </div>
           </div>
 
           <div class="form-group row">
-            <label for="amount" class="col-sm-3 col-form-label">Challan <span class="text-danger">*</span>  </label>
+            <label for="note" class="col-sm-3 col-form-label">Short Note </label>
             <div class="col-sm-9">
-                <input type="text" class="form-control" placeholder='challan no'>
-            </div>
-          </div>
-
-          <div class="form-group row">
-            <label for="note" class="col-sm-3 col-form-label">Note </label>
-            <div class="col-sm-9">
-              <textarea name="" placeholder='note' class='form-control' id="" cols="10" rows="10"></textarea>
+              <textarea name="description" placeholder='note' class='form-control' id="" cols="10" rows="10"></textarea>
             </div>
           </div>
 
