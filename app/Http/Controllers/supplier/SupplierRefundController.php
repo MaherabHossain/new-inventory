@@ -5,6 +5,7 @@ namespace App\Http\Controllers\supplier;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Supplier;
+use App\Models\SupplierRefund;
 use Illuminate\Support\Facades\Session;
 use App\Models\SupplierInvoice;
 class SupplierRefundController extends Controller
@@ -21,6 +22,7 @@ class SupplierRefundController extends Controller
     public function supplierRefund($supplierId)
     {
         $data['supplier'] = Supplier::FindOrFail($supplierId);
+        $data['refunds'] = SupplierRefund::all();
         return view('suppliers.refund.index',$data);
     }
     /**
@@ -39,9 +41,22 @@ class SupplierRefundController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request,$supplierId)
     {
-        //
+        $validated = $request->validate([
+            'amount' => 'required',
+            'date' => 'required',
+        ]);
+        $formData = $request->all();
+        $formData['supplier_id'] = $supplierId;
+
+        if(SupplierRefund::create($formData)){
+            Session::flash('message',' Refund Added successfully! ');
+        }else{
+            Session::flash('error','Something Wrong!');
+        }
+
+        return redirect()->route('supplierRefund.show',$supplierId);
     }
 
     /**
@@ -86,6 +101,11 @@ class SupplierRefundController extends Controller
      */
     public function destroy($id)
     {
-        //
+        if(SupplierRefund::FindOrFail($id)->delete()){
+            Session::flash('message',' Payment Deleted ');
+        }else{
+            Session::flash('error','Something Wrong!');
+        }
+        return redirect()->back();
     }
 }

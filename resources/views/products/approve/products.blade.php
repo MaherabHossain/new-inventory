@@ -7,10 +7,7 @@
     
 	<div class="col-md-6">
 	<h3>Inapprove Product List </h3>	
-	</div>
-
-  
-   
+	</div> 
     <div class="container-fluid">
     @if ($errors->any())
     <div class="alert alert-danger">

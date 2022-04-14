@@ -63,6 +63,8 @@ Route::prefix('supplier/')->group(function () {
     Route::delete('payment/{payment_id}', [SupplierPaymentController::class,'destroy'])->name('supplier.payment.delete');
     Route::get('payment/{payment_id}/{supplier_id}', [SupplierPaymentController::class,'show'])->name('supplier.payment.details');
     Route::get('supplier/refund/{supplier_id}/show',[SupplierRefundController::class, 'supplierRefund'])->name('supplierRefund.show');
+    Route::post('supplier/refund/{supplier_id}', [SupplierRefundController::class,'store'])->name('supplier.refund.store');
+    Route::delete('supplier/refund/{refund_id}', [SupplierRefundController::class,'destroy'])->name('supplier.refund.delete');
 });
 
 // product and brand
