@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Session;
 use App\Models\SupplierInvoice;
 use App\Models\SupplierInvoiceItem;
 use App\Models\Product;
+use App\Models\SupplierPayment;
 class SupplierInvoiceController extends Controller
 {
     /**
@@ -65,6 +66,7 @@ class SupplierInvoiceController extends Controller
      */
     public function show($invoiceId,$supplierId)
     {
+        $data['total_pay'] = SupplierPayment::where('supplier_invoice_id',$invoiceId)->sum('amount');
         $data['supplier'] = Supplier::FindOrFail($supplierId);
         $data['supplier']['invoice_item'] = SupplierInvoiceItem::where('supplier_invoice_id',$invoiceId)->get();
         $data['invoice'] = SupplierInvoice::FindOrFail($invoiceId);

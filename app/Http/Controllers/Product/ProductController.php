@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Brand;
 use App\Models\Product;
+use App\Models\SupplierInvoiceItem;
 use Illuminate\Support\Facades\Session;
 
 class ProductController extends Controller
@@ -21,7 +22,29 @@ class ProductController extends Controller
         $data['products'] = Product::all();
         return view('products.product',$data);
     }
+    public function inapproveProduct()
+    {
+        $data['products'] = SupplierInvoiceItem::where('status',0)->get();
 
+        return view('products.approve.products',$data);
+    }
+
+    public function approveProduct($item_id)
+    {
+        $invoice_item = SupplierInvoiceItem::FindOrFail($item_id);
+        $productId =  $invoice_item->product_id;
+        $invoice_item->status = 1;
+        if($invoice_item->save()){
+            $product = Product::FindOrFail($productId);
+            $product->quantity = $product->quantity +  $invoice_item->quantity;
+            if($product->save()){
+                Session::flash('message','Product Approve Successfully!');
+            }
+        }else{
+            Session::flash('error','Something wrong!');
+        }    
+        return redirect()->route('inapprove.product');;
+    }
     /**
      * Show the form for creating a new resource.
      *  

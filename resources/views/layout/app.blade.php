@@ -90,6 +90,7 @@
                       <div class="bg-white py-2 collapse-inner rounded">
                         <a class="collapse-item" href="{{ url('brand') }}">Brand</a>
                         <a class="collapse-item" href="{{ url('product') }}">Product</a>
+                        <a class="collapse-item" href="{{ route('inapprove.product') }}">Approve Product</a>
                     
                       </div>
                     </div>

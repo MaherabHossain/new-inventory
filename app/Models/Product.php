@@ -8,7 +8,7 @@ use App\Models\Brand;
 class Product extends Model
 {
     use HasFactory;
-    protected $fillable        = ['product_name','description','brand_id']; 
+    protected $fillable        = ['quantity','product_name','description','brand_id']; 
 
     public function brand(){
 

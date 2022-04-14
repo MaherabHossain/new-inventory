@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Models\Supplier;
 use Illuminate\Support\Facades\Session;
 use App\Models\SupplierInvoice;
+use App\Models\SupplierPayment;
+
 class SupplierPaymentController extends Controller
 {
     /**
@@ -21,6 +23,7 @@ class SupplierPaymentController extends Controller
     public function supplierPayment($supplierId)
     {
         $data['supplier'] = Supplier::FindOrFail($supplierId);
+        $data['payments'] = SupplierPayment::all();
         return view('suppliers.payment.index',$data);
     }
     /**
@@ -39,9 +42,23 @@ class SupplierPaymentController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request,$supplierId,$invoiceId=null)
     {
-        //
+        $validated = $request->validate([
+            'date' => 'required',
+            'amount' => 'required',
+        ]);
+
+        $formData = $request->all();
+
+        $formData['supplier_id'] = $supplierId;
+        $formData['supplier_invoice_id'] = $invoiceId;
+        if(SupplierPayment::create($formData)){
+            Session::flash('message',' Payment added');
+        }else{
+            Session::flash('error','Something Wrong!');
+        }
+        return redirect()->back(); 
     }
 
     /**
@@ -50,9 +67,11 @@ class SupplierPaymentController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($paymentId,$supplierId)
     {
-        //
+        $data['supplier'] = Supplier::FindOrFail($supplierId);
+        $data['payment'] = SupplierPayment::FindOrFail($paymentId);
+        return view('suppliers.payment.details',$data);
     }
 
     /**
@@ -86,6 +105,11 @@ class SupplierPaymentController extends Controller
      */
     public function destroy($id)
     {
-        //
+        if(SupplierPayment::FindOrFail($id)->delete()){
+            Session::flash('message',' Payment Deleted ');
+        }else{
+            Session::flash('error','Something Wrong!');
+        }
+        return redirect()->back(); 
     }
 }

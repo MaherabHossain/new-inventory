@@ -38,12 +38,17 @@ class SupplierInvoiceItemController extends Controller
     public function store(Request $request,$invoiceId,$supplierId)
     {
         $validated = $request->validate([
-            'product_name' => 'required',
+            'product' => 'required',
             'quantity' => 'required',
             'unit_price' => 'required'
         ]);
         $formData = $request->all();
+        $product_info = json_decode($formData['product'], true);
+        $formData['product_id'] =  $product_info['id'];
+        $formData['product_name'] =  $product_info['name'];
         $formData['supplier_invoice_id'] = $invoiceId;
+        $formData['status'] = '0';
+        $formData['supplier_id'] = $supplierId;
         if(SupplierInvoiceItem::create($formData)){
             Session::flash('message',' Product added');
         }else{
@@ -86,7 +91,6 @@ class SupplierInvoiceItemController extends Controller
     {
         //
     }
-
     /**
      * Remove the specified resource from storage.
      *

@@ -46,7 +46,7 @@
                                             <th>Id</th>
                                             <th>Brand</th>
                                             <th>Name</th>
-                                            
+                                            <th>Quantity</th>
                                             <th>Actions</th>
                                         </tr>
                                     </thead>
@@ -54,7 +54,8 @@
                                         <tr>
                                             <th>Id</th>
                                             <th>Brand</th>
-                                            <th>Name</th>                                         
+                                            <th>Name</th>  
+                                            <th>Stock</th>                                      
                                             <th>Actions</th>
                                         </tr>
                                     </tfoot>
@@ -65,6 +66,7 @@
                                             <td>{{$product->id}}</td>
                                             <td>{{$product->brand->brand_name}}</td>
                                             <td>{{$product->product_name}}</td>
+                                            <td>{{$product->quantity}}</td>
                                             <td class="text-center">
                                                 <form action="{{url('product/'.$product->id)}}" method="post">
                                                 <a href="{{url('product/'.$product->id)}}" class="btn btn-success btn-sm"> <i class="fa fa-eye" ></i></a>

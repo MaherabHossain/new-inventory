@@ -33,62 +33,50 @@
       @if(Session::has('message'))
       <div class="alert alert-success">
           <p>{{ Session::get('message') }}</p>
-      <div>
+      <div> 
   @endif
   @if(Session::has('error'))
       <div class="alert alert-success">
           <p>{{ Session::get('error') }}</p>
       <div>
   @endif
-  
+  <a href="{{ route('supplierPayment.show',['supplier_id'=>$supplier->id]) }}" class="btn btn-primary mb-2"> <i class="fa fa-arrow-left"></i> Back </a>
         <div class="card shadow mb-4">
 
-<div class="card-body">
-  <h4> Supplier name : {{ $supplier->name }}</h4>	
-    <div class="table-responsive">
-        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-            <thead>
-                <tr>
-                    <th>Id</th>
-                    <th>Date</th>
-                    <th>Amount</th>
-                    <th>Note</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tfoot>
-                <tr>
-                    <th>Id</th>
-                    <th>Date</th>
-                    <th>Amount</th>
-                    <th>Note</th>
-                    <th>Actions</th>
-                </tr>
-            </tfoot>
-            <tbody>
-              @foreach ($payments as $payment)
-                  
-             
-                <tr>
-                    <td>{{ $payment->id }}</td>
-                    <td>{{ $payment->date }}</td>
-                    <td>{{ $payment->amount }}</td>
-                    <td>{{ $payment->note }}</td>
-                    <td class="text-center">
-                      <form action="{{ route('supplier.payment.delete',['payment_id'=>$payment->id]) }}" method="post">
-                        @csrf
-                        @method('delete')
-                        <a href="{{ route('supplier.payment.details',['payment_id'=>$payment->id,'supplier_id'=>$supplier->id]) }}" class="btn btn-success btn-sm"> <i class="fa fa-eye" ></i></a>
-                       
-                        <button onclick="return confirm('Are you sure')" class="btn btn-danger mb-1 btn-sm"> <i class="fa fa-trash"></i> </button>
-                      </form>
-                      </td>
-                </tr>
-                @endforeach   
-            </tbody>
-        </table>
-    </div>
-</div>
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary"> Payment Details </h6>
+              </div>
+              <div class="card-body">
+                <h4> Supplier name : {{ $supplier->name }}</h4>	
+                  <div class="row clearfix justify-content-md-center">
+                      <div class="col-md-8">
+                          <table class="table table-borderless table-striped">
+                        
+                            <tr>
+                                <th class="text-right">Amount : </th>
+                                <td>{{$payment->amount}} </td>
+                            </tr>
+                            <tr>
+                                <th class="text-right">Date : </th>
+                                <td> {{$payment->date}} </td>
+                            </tr>
+                            <tr>
+                                <th class="text-right">Note : </th>
+                                <td> {{$payment->note}} </td>
+                            </tr>
+                            <tr>
+                                <th class="text-right">Type : </th>
+                                <td> <?php if(isset($payment->supplier_invoice_id)){
+                                    echo "Invoice Payment";
+                                }else{
+                                    echo "Payment";
+                                }?> </td>
+                            </tr>
+                           </table>
+                      </div>
+                  </div>
+              </div>
+            
 </div>
     </div>
 </div>

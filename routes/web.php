@@ -59,9 +59,9 @@ Route::prefix('supplier/')->group(function () {
    });
     // supplier payment
     Route::get('payment/{supplier_id}/show',[SupplierPaymentController::class, 'supplierPayment'])->name('supplierPayment.show');
-    Route::post('payment/{supplier_id}/{invoice_id}', function ($supplier_id,$receipt_id) {
-        return 'store payment';
-    })->name('supplier.invoice.payment.store');
+    Route::post('payment/{supplier_id}/{invoice_id?}', [SupplierPaymentController::class,'store'])->name('supplier.payment.store');
+    Route::delete('payment/{payment_id}', [SupplierPaymentController::class,'destroy'])->name('supplier.payment.delete');
+    Route::get('payment/{payment_id}/{supplier_id}', [SupplierPaymentController::class,'show'])->name('supplier.payment.details');
     Route::get('supplier/refund/{supplier_id}/show',[SupplierRefundController::class, 'supplierRefund'])->name('supplierRefund.show');
 });
 
@@ -76,6 +76,8 @@ Route::prefix('brand')->group(function () {
     Route::post('/{id}/delete', [BrandController::class, 'destroy']);
 });
 // product
-// resourse route not working :(
 
 Route::resource('product', ProductController::class);
+
+Route::get('products/inapprove', [ProductController::class,'inapproveProduct'] )->name('inapprove.product');
+Route::put('product/approve/{item_id}', [ProductController::class,'approveProduct'])->name('approve.product');
