@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Models\Supplier;
 use Illuminate\Support\Facades\Session;
 use App\Models\SupplierInvoice;
+use App\Models\SupplierInvoiceItem;
+use App\Models\Product;
 class SupplierInvoiceController extends Controller
 {
     /**
@@ -63,7 +65,11 @@ class SupplierInvoiceController extends Controller
      */
     public function show($invoiceId,$supplierId)
     {
-        return view('suppliers.invoice.details');
+        $data['supplier'] = Supplier::FindOrFail($supplierId);
+        $data['supplier']['invoice_item'] = SupplierInvoiceItem::where('supplier_invoice_id',$invoiceId)->get();
+        $data['invoice'] = SupplierInvoice::FindOrFail($invoiceId);
+        $data['products'] = Product::all();
+        return view('suppliers.invoice.details',$data);
     }
 
     /**

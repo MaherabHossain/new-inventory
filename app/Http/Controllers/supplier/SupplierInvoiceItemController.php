@@ -4,10 +4,10 @@ namespace App\Http\Controllers\supplier;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Supplier;
 use Illuminate\Support\Facades\Session;
 use App\Models\SupplierInvoice;
-class SupplierPaymentController extends Controller
+use App\Models\SupplierInvoiceItem;
+class SupplierInvoiceItemController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,11 +18,7 @@ class SupplierPaymentController extends Controller
     {
         //
     }
-    public function supplierPayment($supplierId)
-    {
-        $data['supplier'] = Supplier::FindOrFail($supplierId);
-        return view('suppliers.payment.index',$data);
-    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -39,9 +35,22 @@ class SupplierPaymentController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request,$invoiceId,$supplierId)
     {
-        //
+        $validated = $request->validate([
+            'product_name' => 'required',
+            'quantity' => 'required',
+            'unit_price' => 'required'
+        ]);
+        $formData = $request->all();
+        $formData['supplier_invoice_id'] = $invoiceId;
+        if(SupplierInvoiceItem::create($formData)){
+            Session::flash('message',' Product added');
+        }else{
+            Session::flash('error','Something Wrong!');
+        }
+        return redirect()->back();   
+
     }
 
     /**
@@ -86,6 +95,11 @@ class SupplierPaymentController extends Controller
      */
     public function destroy($id)
     {
-        //
+        if(SupplierInvoiceItem::findOrFail($id)->delete()){
+            Session::flash('message','Product Deleted Successfully!');
+        }else{
+            Session::flash('error','Something wrong!');
+        }
+        return redirect()->back();
     }
 }

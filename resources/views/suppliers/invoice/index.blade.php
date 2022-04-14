@@ -19,9 +19,9 @@
 <div class="row clearfix">
 	<div class="col-md-2">
     <div class="nav flex-column nav-pills" >
-    <a href="{{url('supplier/3')}}" class="btn btn-primary text-left">Supplier Information</a>
+    <a href="{{url('supplier/'.$supplier->id)}}" class="btn btn-primary text-left">Supplier Information</a>
 	<a href="{{ route('supplierInvoice.show',$supplier->id) }}" class="btn btn-secondary mt-1 text-left">Invoice</a>
-	<a href="{{ route('supplierInvoice.show',$supplier->id) }}" class="btn btn-primary mt-1 text-left">Payment</a>
+	<a href="{{ route('supplierPayment.show',$supplier->id) }}" class="btn btn-primary mt-1 text-left">Payment</a>
 	<a href="{{ route('supplierRefund.show',$supplier->id) }}" class="btn btn-primary mt-1 text-left">Refund</a>
 </div>
 

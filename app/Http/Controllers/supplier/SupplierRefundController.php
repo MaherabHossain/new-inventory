@@ -4,7 +4,9 @@ namespace App\Http\Controllers\supplier;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-
+use App\Models\Supplier;
+use Illuminate\Support\Facades\Session;
+use App\Models\SupplierInvoice;
 class SupplierRefundController extends Controller
 {
     /**
@@ -18,7 +20,8 @@ class SupplierRefundController extends Controller
     }
     public function supplierRefund($supplierId)
     {
-        return view('suppliers.refund.index');
+        $data['supplier'] = Supplier::FindOrFail($supplierId);
+        return view('suppliers.refund.index',$data);
     }
     /**
      * Show the form for creating a new resource.
