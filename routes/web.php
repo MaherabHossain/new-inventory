@@ -83,3 +83,4 @@ Route::resource('product', ProductController::class);
 
 Route::get('products/inapprove', [ProductController::class,'inapproveProduct'] )->name('inapprove.product');
 Route::put('product/approve/{item_id}', [ProductController::class,'approveProduct'])->name('approve.product');
+Route::get('product/inapprove/delete/{item_id}', [ProductController::class,'deleteInapproveProduct'])->name('delete.inapprove.product');

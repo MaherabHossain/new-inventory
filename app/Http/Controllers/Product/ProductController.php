@@ -45,6 +45,16 @@ class ProductController extends Controller
         }    
         return redirect()->route('inapprove.product');;
     }
+
+    public function deleteInapproveProduct($item_id)
+    {
+        if(SupplierInvoiceItem::findOrFail($item_id)->delete()){
+            Session::flash('message','Product Not Accepted!');
+        }else{
+            Session::flash('error','Something wrong!');
+        }
+        return redirect()->route('inapprove.product');
+    }
     /**
      * Show the form for creating a new resource.
      *  

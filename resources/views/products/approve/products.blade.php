@@ -66,7 +66,7 @@
                                                     @method('put')
                                                     <button class="btn btn-success btn-sm" type="submit"> <i class="fa fa-check" ></i></button>
                                                    
-                                                    <a onclick="return confirm('Are you sure')" class="btn btn-danger mb-1 btn-sm"> <i class="fa fa-times"></i> </a>
+                                                    <a onclick="return confirm('Are you sure')" href="{{ route('delete.inapprove.product',$product->id) }}" class="btn btn-danger mb-1 btn-sm"> <i class="fa fa-times"></i> </a>
                                                 </form>
                                               </td>
                                         </tr>
