@@ -108,10 +108,10 @@
 <div class="row clearfix">
 	<div class="col-md-2">
     <div class="nav flex-column nav-pills" >
-	<a href="{{url('customers/3')}}" class="btn btn-secondary text-left">Customer Information</a>
-	<a href="{{ route('customerInvoice.show',3) }}" class="btn btn-primary mt-1 text-left">Invoice</a>
-	<a href="{{ route('customerPayment.show',3) }}" class="btn btn-primary mt-1 text-left">Payment</a>
-	<a href="{{ route('customerRefund.show',3) }}" class="btn btn-primary mt-1 text-left">Refund</a>
+	<a href="{{url('customers/',$customer->id)}}" class="btn btn-secondary text-left">Customer Information</a>
+	<a href="{{ route('customerInvoice.show',$customer->id) }}" class="btn btn-primary mt-1 text-left">Invoice</a>
+	<a href="{{ route('customerPayment.show',$customer->id) }}" class="btn btn-primary mt-1 text-left">Payment</a>
+	<a href="{{ route('customerRefund.show',$customer->id) }}" class="btn btn-primary mt-1 text-left">Refund</a>
 </div>
 
 

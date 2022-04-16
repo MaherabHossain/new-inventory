@@ -5,6 +5,7 @@ use App\Http\Controllers\customer\CustomerController;
 use App\Http\Controllers\customer\PaymentController;
 use App\Http\Controllers\customer\InvoiceController;
 use App\Http\Controllers\customer\RefundController;
+use App\Http\Controllers\customer\CustomerInvoiceItemController;
 
 use App\Http\Controllers\supplier\SupplierController;
 use App\Http\Controllers\supplier\SupplierInvoiceController;
@@ -25,9 +26,11 @@ Route::resource('customers', CustomerController::class);
 
 // invoices route
 Route::get('customer/invoices/{customer_id}/show',[InvoiceController::class, 'customerInvoice'])->name('customerInvoice.show');
-Route::post('customer/invoice/{customer_id}', [InvoiceController::class, 'store'])->name('invoice.store');
-Route::get('customer/invoice/{invoice_id}/{customer_id}', [InvoiceController::class, 'show'])->name('invoice.details');
-
+Route::post('customer/invoice/{customer_id}', [InvoiceController::class, 'store'])->name('customer.invoice.store');
+Route::get('customer/invoice/{invoice_id}/{customer_id}', [InvoiceController::class, 'show'])->name('customer.invoice.details');
+Route::delete('customer/invoice/{invoice_id}/{customer_id}', [InvoiceController::class,'destroy'])->name('customer.invoice.delete');
+Route::post('customer/product/{invoice_id}/{customer_id}', [CustomerInvoiceItemController::class,'store'])->name('customer.invoiceitem.store') ;
+Route::delete('customer/product/{invoice_item}/{customer_id}', [CustomerInvoiceItemController::class,'destroy'])->name('customer.invoiceitem.delete');
 // Receipt
 Route::post('receipt/{customer_id}/{invoice_id}', function ($customer_id,$receipt_id) {
     return 'store receipt';
@@ -38,9 +41,8 @@ Route::post('receipt/{customer_id}/{invoice_id}', function ($customer_id,$receip
 
 Route::get('customer/payment/{customer_id}/show',[PaymentController::class, 'customerPayment'])->name('customerPayment.show');
 Route::get('customer/refund/{customer_id}/show',[RefundController::class, 'customerRefund'])->name('customerRefund.show');
-Route::post('customer/payment/{customer_id}/{invoice_id}', function ($customer_id,$receipt_id) {
-    return 'store payment';
-})->name('customer.invoice.payment.store');
+Route::post('customer/payment/{customer_id}/{invoice_id?}', [PaymentController::class,'store'])->name('customer.payment.store');
+Route::delete('customer/payment/{payment_id}/{customer_id}', [PaymentController::class,'destroy'])->name('customer.payment.delete');
 
 // suppliers routes
 

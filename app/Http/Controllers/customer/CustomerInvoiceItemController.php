@@ -4,10 +4,12 @@ namespace App\Http\Controllers\customer;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\CustomerInvoice;
+use App\Models\CustomerInvoiceItem;
 use App\Models\Customer;
-use App\Models\CustomerPayment;
 use Illuminate\Support\Facades\Session;
-class PaymentController extends Controller
+
+class CustomerInvoiceItemController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,10 +20,7 @@ class PaymentController extends Controller
     {
         //
     }
-    public function customerPayment($customerId){
-        $data['customer'] = Customer::FindOrFail($customerId);
-        return view('customers.payment.index',$data);
-    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -38,23 +37,26 @@ class PaymentController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request,$customerId,$invoiceId=null)
+    public function store(Request $request,$invoiceId,$customerId)
     {
         $validated = $request->validate([
-            'date' => 'required',
-            'amount' => 'required',
+            'product' => 'required',
+            'quantity' => 'required',
+            'unit_price' => 'required'
         ]);
         $formData = $request->all();
-        $formData['customer_id'] = $customerId;
+        $product_info = json_decode($formData['product'], true);
+        $formData['product_id'] =  $product_info['id'];
+        $formData['product_name'] =  $product_info['name'];
         $formData['customer_invoice_id'] = $invoiceId;
-        
-        if(CustomerPayment::create($formData)){
-            Session::flash('message','Customer Payment Added Successfully!');
+        $formData['status'] = '0';
+        $formData['customer_id'] = $customerId;
+        if(CustomerInvoiceItem::create($formData)){
+            Session::flash('message',' Product added');
         }else{
-            Session::flash('error','Something wrong!');
-        } 
-        return redirect()->back();
-        
+            Session::flash('error','Something Wrong!');
+        }
+        return redirect()->back();   
     }
 
     /**
@@ -97,13 +99,13 @@ class PaymentController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($paymentId,$customerId)
+    public function destroy($itemId,$customerId)
     {
-        if(CustomerPayment::findOrFail($paymentId)->delete()){
-            Session::flash('message','Payment Deleted Successfully!');
+        if(CustomerInvoiceItem::findOrFail($itemId)->delete()){
+            Session::flash('message','Product Deleted Successfully!');
         }else{
             Session::flash('error','Something wrong!');
         }
-        return redirect()->route('customerPayment.show',$customerId);
+        return redirect()->back();
     }
 }

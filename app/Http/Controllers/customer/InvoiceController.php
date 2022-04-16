@@ -4,7 +4,12 @@ namespace App\Http\Controllers\customer;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-
+use App\Models\CustomerInvoice;
+use App\Models\Customer;
+use App\Models\Product;
+use App\Models\CustomerPayment;
+use App\Models\CustomerInvoiceItem;
+use Illuminate\Support\Facades\Session;
 class InvoiceController extends Controller
 {
     /**
@@ -12,13 +17,14 @@ class InvoiceController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
-        return view('customers.invoice.index');
-    }
+    // public function index()
+    // {
+    //     return view('customers.invoice.index');
+    // }
 
-    public function customerInvoice($userId){
-        return view('customers.invoice.index');
+    public function customerInvoice($customerId){
+        $data['customer'] = Customer::FindOrFail($customerId);
+        return view('customers.invoice.index',$data);  
     }
 
     /**
@@ -39,7 +45,17 @@ class InvoiceController extends Controller
      */
     public function store(Request $request,$customerId)
     {
-        return redirect('customer/invoice/3/4');
+        $validated = $request->validate([
+            'date' => 'required',
+        ]);
+        $formData = $request->all();
+        $formData['customer_id'] = $customerId;
+        if(CustomerInvoice::create($formData)){
+            Session::flash('message','Customer Invoice Created Successfully!');
+        }else{
+            Session::flash('error','Something wrong!');
+        } 
+        return redirect()->back();
     }
 
     /**
@@ -50,11 +66,12 @@ class InvoiceController extends Controller
      */
     public function show($invoiceId,$customerId)
     {
-        // echo 'invoice details';
-        // echo 'invoice id'.$invoiceId;
-        // echo 'customer id'.$customerId;
-
-        return view('customers.invoice.details');
+        $data['total_pay'] = CustomerPayment::where('customer_invoice_id',$invoiceId)->sum('amount');
+        $data['products'] = Product::all();
+        $data['customer'] = Customer::FindOrFail($customerId);
+         $data['customer']['invoice_item'] = CustomerInvoiceItem::where('customer_invoice_id',$invoiceId)->get();
+        $data['invoice'] = CustomerInvoice::FindOrFail($invoiceId);
+        return view('customers.invoice.details',$data);
     }
 
     /**
@@ -86,8 +103,13 @@ class InvoiceController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($invoiceId,$customerId)
     {
-        //
+        if(CustomerInvoice::findOrFail($invoiceId)->delete()){
+            Session::flash('message','Invoice Deleted Successfully!');
+        }else{
+            Session::flash('error','Something wrong!');
+        }
+        return redirect()->route('customerInvoice.show',$customerId);
     }
 }
