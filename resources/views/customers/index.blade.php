@@ -42,6 +42,7 @@
                                         </tr>
                                     </tfoot>
                                     <tbody>
+                                        <?php $i = 0;?>
                                     @foreach ($customers as $customer)
                                         <tr>
                                             <td>{{ ++$i }}</td>

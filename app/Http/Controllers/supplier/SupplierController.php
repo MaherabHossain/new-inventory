@@ -5,6 +5,9 @@ namespace App\Http\Controllers\supplier;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Supplier;
+use App\Models\SupplierInvoiceItem;
+use App\Models\SupplierPayment;
+use App\Models\SupplierRefund;
 use Illuminate\Support\Facades\Session;
 class SupplierController extends Controller
 {
@@ -58,6 +61,15 @@ class SupplierController extends Controller
     public function show($id)
     {
         $data['supplier'] = Supplier::FindOrFail($id);
+        $invoice_items = SupplierInvoiceItem::where('supplier_id',$id)->get();
+        $data['total_payment'] = SupplierPayment::where('supplier_id',$id)->sum('amount');
+        $data['total_refund'] = SupplierRefund::where('supplier_id',$id)->sum('amount');
+        $total_purchase = 0;
+        foreach ($invoice_items as $invoice_item) {
+           $total_purchase += $invoice_item->quantity * $invoice_item->unit_price;
+        }
+        $data['total_purchase'] = $total_purchase;  
+
         return view('suppliers.detailsSupplier',$data);
     }
 

@@ -78,9 +78,7 @@
 
         </div>
         <!-- End of Content Wrapper -->
-        <footer class="sticky-footer bg-white">
-           
-        </footer>
+        
 
     </div>
     <!-- End of Page Wrapper -->

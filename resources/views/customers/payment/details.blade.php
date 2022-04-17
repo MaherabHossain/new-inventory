@@ -13,7 +13,7 @@
 <div class="row clearfix">
 	<div class="col-md-2">
     <div class="nav flex-column nav-pills" >
-	<a href="{{url('customer/'.$customer->id)}}" class="btn btn-primary text-left">Customer Information</a>
+	<a href="{{url('customers/'.$customer->id)}}" class="btn btn-primary text-left">Customer Information</a>
 	<a href="{{ route('customerInvoice.show',$customer->id) }}" class="btn btn-primary mt-1 text-left">Invoice</a>
 	<a href="{{ route('customerPayment.show',$customer->id) }}" class="btn btn-secondary mt-1 text-left">Payment</a>
 	<a href="{{ route('customerRefund.show',$customer->id) }}" class="btn btn-primary mt-1 text-left">Refund</a>

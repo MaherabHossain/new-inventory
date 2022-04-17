@@ -4,6 +4,9 @@ namespace App\Http\Controllers\customer;
 
 use App\Http\Controllers\Controller;
 use App\Models\Customer;
+use App\Models\CustomerInvoiceItem;
+use App\Models\CustomerPayment;
+use App\Models\CustomerRefund;
 use Illuminate\Http\Request;
 
 
@@ -16,10 +19,9 @@ class CustomerController extends Controller
      */
     public function index()
     {
-        $customers = Customer::latest()->paginate(5);
+       $data['customers'] = Customer::all();
     
-        return view('customers.index',compact('customers'))
-            ->with('i', (request()->input('page', 1) - 1) * 5);
+        return view('customers.index',$data);
     }
 
     /**
@@ -58,9 +60,18 @@ class CustomerController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Customer $customer)
+    public function show($id)
     {
-        return view('customers.detailsCustomer',compact('customer'));
+        $data['customer'] = Customer::FindOrFail($id);
+        $invoice_items = CustomerInvoiceItem::where('customer_id',$id)->get();
+        $data['total_payment'] = CustomerPayment::where('customer_id',$id)->sum('amount');
+        $data['total_refund'] = CustomerRefund::where('customer_id',$id)->sum('amount');
+        $total_purchase = 0;
+        foreach ($invoice_items as $invoice_item) {
+           $total_purchase += $invoice_item->quantity * $invoice_item->unit_price;
+        }
+        $data['total_purchase'] = $total_purchase;
+        return view('customers.detailsCustomer',$data);
     }
     /**
      * Show the form for editing the specified resource.
