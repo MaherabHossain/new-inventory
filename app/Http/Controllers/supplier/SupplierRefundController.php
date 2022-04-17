@@ -22,7 +22,7 @@ class SupplierRefundController extends Controller
     public function supplierRefund($supplierId)
     {
         $data['supplier'] = Supplier::FindOrFail($supplierId);
-        $data['refunds'] = SupplierRefund::all();
+        $data['refunds'] = SupplierRefund::where('supplier_id',$supplierId)->get();
         return view('suppliers.refund.index',$data);
     }
     /**
@@ -102,7 +102,7 @@ class SupplierRefundController extends Controller
     public function destroy($id)
     {
         if(SupplierRefund::FindOrFail($id)->delete()){
-            Session::flash('message',' Payment Deleted ');
+            Session::flash('message',' Refund Deleted ');
         }else{
             Session::flash('error','Something Wrong!');
         }

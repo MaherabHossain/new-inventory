@@ -41,8 +41,11 @@ Route::post('receipt/{customer_id}/{invoice_id}', function ($customer_id,$receip
 
 Route::get('customer/payment/{customer_id}/show',[PaymentController::class, 'customerPayment'])->name('customerPayment.show');
 Route::get('customer/refund/{customer_id}/show',[RefundController::class, 'customerRefund'])->name('customerRefund.show');
+Route::post('customer/refund/{customer_id}',[RefundController::class,'store'])->name('customer.refund.store');
+Route::delete('customer/refund/{refund_id}/{customer_id}', [RefundController::class,'destroy'])->name('customer.refund.delete');
 Route::post('customer/payment/{customer_id}/{invoice_id?}', [PaymentController::class,'store'])->name('customer.payment.store');
 Route::delete('customer/payment/{payment_id}/{customer_id}', [PaymentController::class,'destroy'])->name('customer.payment.delete');
+Route::get('customer/payment/{payment_id}/{customer_id}', [PaymentController::class,'show'])->name('customer.payment.show');
 
 // suppliers routes
 

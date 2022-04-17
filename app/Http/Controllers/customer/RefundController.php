@@ -4,6 +4,10 @@ namespace App\Http\Controllers\customer;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\CustomerPayment;
+use App\Models\Customer;
+use App\Models\CustomerRefund;
+use Illuminate\Support\Facades\Session;
 
 class RefundController extends Controller
 {
@@ -19,7 +23,9 @@ class RefundController extends Controller
 
     public function customerRefund($customerId)
     {
-        return view('customers.refund.index');
+        $data['customer'] = Customer::Find($customerId);
+        $data['refunds'] = CustomerRefund::where('customer_id',$customerId)->get();
+        return view('customers.refund.index',$data);
     }
 
     /**
@@ -38,9 +44,22 @@ class RefundController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request,$customerId)
     {
-        //
+        $validated = $request->validate([
+            'amount' => 'required',
+            'date' => 'required',
+        ]);
+        $formData = $request->all();
+        $formData['customer_id'] = $customerId;
+
+        if(CustomerRefund::create($formData)){
+            Session::flash('message',' Refund Added successfully! ');
+        }else{
+            Session::flash('error','Something Wrong!');
+        }
+
+        return redirect()->route('customerRefund.show',$customerId);
     }
 
     /**
@@ -83,8 +102,13 @@ class RefundController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($refundId,$customerId)
     {
-        //
+        if(CustomerRefund::FindOrFail($refundId)->delete()){
+            Session::flash('message',' Refund Deleted ');
+        }else{
+            Session::flash('error','Something Wrong!');
+        }
+        return redirect()->route('customerRefund.show',$customerId);
     }
 }

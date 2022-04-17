@@ -100,18 +100,14 @@
 			    			</tr>
 							@endforeach		    						    		
 			    			<th>
-			    				
-
 			    			</th>
 			    			<th colspan="3" class="text-right">Total : </th>
 			    			<th>{{ $total }}</th>
 			    			<th></th>
-
 			    			<tr>
 			    				<td colspan="4" class="text-right"><strong> Pay : </strong></td>
 			    				<td  class="text-left"><strong> {{$total_pay}} </strong></td>
 			    			</tr>
-
 			    			<tr>
 			    				<td colspan="4" class="text-right"><strong> Due : </strong></td>
 			    				<td  class="text-left"><strong> <?php

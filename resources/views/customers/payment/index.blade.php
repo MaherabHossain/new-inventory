@@ -19,10 +19,10 @@
 <div class="row clearfix">
 	<div class="col-md-2">
     <div class="nav flex-column nav-pills" >
-	<a href="{{url('customers/3')}}" class="btn btn-primary text-left">Customer Information</a>
-	<a href="{{ route('customerInvoice.show',3) }}" class="btn btn-primary mt-1 text-left">Invoice</a>
-	<a href="{{ route('customerPayment.show',3) }}" class="btn btn-secondary mt-1 text-left">Payment</a>
-	<a href="{{ route('customerRefund.show',3) }}" class="btn btn-primary mt-1 text-left">Refund</a>
+	<a href="{{url('customers/'.$customer->id)}}" class="btn btn-primary text-left">Customer Information</a>
+	<a href="{{ route('customerInvoice.show',$customer->id) }}" class="btn btn-primary mt-1 text-left">Invoice</a>
+	<a href="{{ route('customerPayment.show',$customer->id) }}" class="btn btn-secondary mt-1 text-left">Payment</a>
+	<a href="{{ route('customerRefund.show',$customer->id) }}" class="btn btn-primary mt-1 text-left">Refund</a>
 </div>
 
 
@@ -85,10 +85,10 @@
                       <form action="{{ route('customer.payment.delete',['payment_id'=>$payment->id,'customer_id'=>$customer->id]) }}" method="post" >
                         @csrf
                         @method('delete')
-                        <a href="{{ url('customers/3') }}" class="btn btn-success btn-sm"> <i class="fa fa-eye" ></i></a>
+                        <a href="{{ route('customer.payment.show',['payment_id'=>$payment->id,'customer_id'=>$customer->id]) }}" class="btn btn-success btn-sm"> <i class="fa fa-eye" ></i></a>
                        
                         <button onclick="return confirm('Are you sure')" class="btn btn-danger mb-1 btn-sm"> <i class="fa fa-trash"></i> </button>
-                      
+                      </form>
                       </td>
                 </tr>
                 @endforeach 

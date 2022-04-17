@@ -5,24 +5,23 @@
 @section('content')
 <div class="row clearfix mb-4">
 	<div class="col-md-4">
-	<h3>Customer Payment Refund</h3>	
+	<h3>Customer Refund</h3>	
 	</div>
 	<div class="col-md-6 text-right">
     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#add_sale">
 		<!-- <a href="{{ url('invoice/create') }}" class="btn btn-primary">  -->
             <i class="fa fa-plus">
-
-        </i> Add payment Refund </a>
+        </i> Add Refund </a>
 	</div>
 </div>
 
 <div class="row clearfix">
 	<div class="col-md-2">
     <div class="nav flex-column nav-pills" >
-	<a href="{{url('customers/3')}}" class="btn btn-primary text-left">Customer Information</a>
-	<a href="{{ route('customerInvoice.show',3) }}" class="btn btn-primary mt-1 text-left">Invoice</a>
-	<a href="{{ route('customerPayment.show',3) }}" class="btn btn-primary mt-1 text-left">Payment</a>
-	<a href="#" class="btn btn-secondary mt-1 text-left">Refund</a>
+	<a href="{{url('customer/'.$customer->id)}}" class="btn btn-primary text-left">Customer Information</a>
+	<a href="{{ route('customerInvoice.show',$customer->id) }}" class="btn btn-primary mt-1 text-left">Invoice</a>
+	<a href="{{ route('customerPayment.show',$customer->id) }}" class="btn btn-primary mt-1 text-left">Payment</a>
+	<a href="{{ route('customerRefund.show',$customer->id) }}" class="btn btn-secondary mt-1 text-left">Refund</a>
 </div>
 
 
@@ -30,6 +29,16 @@
     
     <div class="col-md-9">
     	<!-- DataTales Example -->
+      @if(Session::has('message'))
+      <div class="alert alert-success">
+          <p>{{ Session::get('message') }}</p>
+      <div>
+  @endif
+  @if(Session::has('error'))
+      <div class="alert alert-success">
+          <p>{{ Session::get('error') }}</p>
+      <div>
+  @endif
         <div class="card shadow mb-4">
 
 <div class="card-body">
@@ -54,28 +63,21 @@
                 </tr>
             </tfoot>
             <tbody>
+              @foreach ($refunds as $refund) 
                 <tr>
-                    <td>1</td>
-                    <td>2-5-2020</td>
-                    <td>5000</td>
-                    <td>payment fot buy a brnad new car</td>
+                    <td>{{ $refund->id }}</td>
+                    <td>{{ $refund->date }}</td>
+                    <td>{{ $refund->amount }}</td>
+                    <td>{{ $refund->note }}</td>
                     <td class="text-center">
-                        <a href="{{ url('customers/3') }}" class="btn btn-success btn-sm"> <i class="fa fa-eye" ></i></a>
-                       
+                       <form action="{{ route('customer.refund.delete',['refund_id'=>$refund->id,'customer_id'=>$customer->id]) }}" method="post">
+                         @csrf
+                         @method('delete')
                         <button onclick="return confirm('Are you sure')" class="btn btn-danger mb-1 btn-sm"> <i class="fa fa-trash"></i> </button>
+                       </form>
                       </td>
                 </tr>
-                   <tr>
-                   <td>1</td>
-                    <td>2-5-2020</td>
-                    <td>5000</td>
-                    <td>payment fot buy a brnad new car</td>
-                    <td class="text-center">
-                        <a href="#" class="btn btn-success btn-sm"> <i class="fa fa-eye" ></i></a>
-                       
-                        <button onclick="return confirm('Are you sure')" class="btn btn-danger mb-1 btn-sm"> <i class="fa fa-trash"></i> </button>
-                      </td>
-                </tr>
+                @endforeach
             </tbody>
         </table>
     </div>
@@ -88,11 +90,11 @@
 
 <div class="modal fade" id="add_sale" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
-    <form action="{{ route('invoice.store',4) }}" method="post">
+    <form action="{{ route('customer.refund.store',$customer->id) }}" method="post">
         @csrf
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="newPaymentModalLabel"> New Sale </h5>
+          <h5 class="modal-title" id="newPaymentModalLabel"> Add Refund </h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -102,21 +104,20 @@
           <div class="form-group row">
             <label for="date" class="col-sm-3 col-form-label"> Date <span class="text-danger">*</span> </label>
             <div class="col-sm-9">
-            <input type="date" class="form-control" placeholder='date'>
+            <input type="text" name="amount" class="form-control" placeholder='Amount'>
             </div>
           </div>
-
           <div class="form-group row">
-            <label for="amount" class="col-sm-3 col-form-label">Amount <span class="text-danger">*</span>  </label>
+            <label for="date" class="col-sm-3 col-form-label"> Date <span class="text-danger">*</span> </label>
             <div class="col-sm-9">
-                <input type="text" class="form-control" placeholder='Amount'>
+            <input type="date" class="form-control" name="date" placeholder='Date'>
             </div>
           </div>
 
           <div class="form-group row">
             <label for="note" class="col-sm-3 col-form-label">Note </label>
             <div class="col-sm-9">
-              <textarea name="" placeholder='note' class='form-control' id="" cols="10" rows="10"></textarea>
+              <textarea name="note" placeholder='note' class='form-control' id="" cols="10" rows="10"></textarea>
             </div>
           </div>
 
