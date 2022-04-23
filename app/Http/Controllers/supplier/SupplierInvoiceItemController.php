@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use App\Models\SupplierInvoice;
+use App\Models\Product;
 use App\Models\SupplierInvoiceItem;
 class SupplierInvoiceItemController extends Controller
 {
@@ -99,11 +100,28 @@ class SupplierInvoiceItemController extends Controller
      */
     public function destroy($id)
     {
-        if(SupplierInvoiceItem::findOrFail($id)->delete()){
-            Session::flash('message','Product Deleted Successfully!');
+        $item =  SupplierInvoiceItem::FindOrFail($id);
+        if($item->status=='1'){
+            $product = Product::FindOrFail($item->product_id);
+        $product['quantity'] = $product['quantity'] - $item->quantity;
+        if($product->save()){
+            if(SupplierInvoiceItem::findOrFail($id)->delete()){
+                Session::flash('message','Product Deleted Successfully!');
+            }else{
+                Session::flash('error','Something wrong!');
+            }
         }else{
             Session::flash('error','Something wrong!');
         }
+        }else{
+            if(SupplierInvoiceItem::findOrFail($id)->delete()){
+                Session::flash('message','Product Deleted Successfully!');
+            }else{
+                Session::flash('error','Something wrong!');
+            }
+        }
+        
+        
         return redirect()->back();
     }
 }
