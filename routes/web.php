@@ -14,6 +14,11 @@ use App\Http\Controllers\supplier\SupplierRefundController;
 use App\Http\Controllers\supplier\SupplierInvoiceItemController;
 use App\Http\Controllers\product\BrandController;
 use App\Http\Controllers\product\ProductController;
+//Worker Controller
+use App\Http\Controllers\worker\WorkerController;
+//Payment Controller 
+use App\Http\Controllers\worker\PaidController;
+
 
 
 Route::get('/', function () {
@@ -89,3 +94,10 @@ Route::resource('product', ProductController::class);
 Route::get('products/inapprove', [ProductController::class,'inapproveProduct'] )->name('inapprove.product');
 Route::put('product/approve/{item_id}', [ProductController::class,'approveProduct'])->name('approve.product');
 Route::get('product/inapprove/delete/{item_id}', [ProductController::class,'deleteInapproveProduct'])->name('delete.inapprove.product');
+
+
+//Workers Route
+Route::resource('workers', WorkerController::class);
+
+//payments Route
+Route::resource('payments', PaidController::class);

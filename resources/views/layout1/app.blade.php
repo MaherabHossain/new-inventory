@@ -75,45 +75,28 @@
                     </a>
                     <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                       <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item" href="{{ url('suppliers') }}">Suppliers</a>
+                        <a class="collapse-item" href="{{ url('supplier') }}">Suppliers</a>
+                    
+                      </div>
+                    </div>
+                </li>
+                <hr class="sidebar-divider">
+               <li class="nav-item">
+                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseThree" aria-expanded="true" aria-controls="collapseThree">
+                      <i class="fas fa-fw fa-cog"></i>
+                      <span>Products</span>
+                    </a>
+                    <div id="collapseThree" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                      <div class="bg-white py-2 collapse-inner rounded">
+                        <a class="collapse-item" href="{{ url('brand') }}">Brand</a>
+                        <a class="collapse-item" href="{{ url('product') }}">Product</a>
+                        <a class="collapse-item" href="{{ route('inapprove.product') }}">Approve Product</a>
                     
                       </div>
                     </div>
                 </li>
                 <hr class="sidebar-divider">
 
-                <li class="nav-item">
-                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseThree" aria-expanded="true" aria-controls="collapseThree">
-                      <i class="fa fa-edit"></i>
-                      <span>Reports</span>
-                    </a>
-                    <div id="collapseThree" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-                      <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item" href="">Sale</a>
-                        <a class="collapse-item" href="">Purchase</a>
-                        <a class="collapse-item" href="">Payment</a>
-                        <a class="collapse-item" href="">Receipt</a>
-                      </div>
-                    </div>
-                </li>
-
-                <!-- Employee -->
-                <hr class="sidebar-divider">
-
-<li class="nav-item">
-    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseFour" aria-expanded="true" aria-controls="collapseFour">
-      <i class="fa fa-edit"></i>
-      <span>Worker</span>
-    </a>
-    <div id="collapseFour" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-      <div class="bg-white py-2 collapse-inner rounded">
-        <a class="collapse-item" href="{{ url('workers') }}">Workers</a>
-        <a class="collapse-item" href="">Expaire Workers</a>
-        <a class="collapse-item" href="">Recent Expaire Workers</a>
-        <a class="collapse-item" href="{{ url('payments') }}">Payments</a>
-      </div>
-    </div>
-</li>
             <!-- Sidebar Toggler (Sidebar) -->
             <div class="text-center d-none d-md-inline">
                 <button class="rounded-circle border-0" id="sidebarToggle"></button>
